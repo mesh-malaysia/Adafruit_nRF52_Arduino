@@ -39,8 +39,15 @@ void Bluefruit_printInfo() {}
 void initVariant() __attribute__((weak));
 void initVariant() { }
 
+// Allow applications to override the task stack sizes via build flags
+// (e.g. -DLOOP_STACK_SZ=2048), mirroring CFG_BLE_TASK_STACKSIZE in the
+// Bluefruit library. Values are in WORDS (multiply by 4 for bytes).
+#ifndef LOOP_STACK_SZ
 #define LOOP_STACK_SZ       (256*4)
+#endif
+#ifndef CALLBACK_STACK_SZ
 #define CALLBACK_STACK_SZ   (256*3)
+#endif
 
 static TaskHandle_t  _loopHandle;
 
