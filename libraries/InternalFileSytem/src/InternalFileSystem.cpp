@@ -25,13 +25,20 @@
 #include "InternalFileSystem.h"
 #include "flash/flash_nrf5x.h"
 
-#ifdef NRF52840_XXAA
-  #define LFS_FLASH_ADDR        0xED000
-#else
-  #define LFS_FLASH_ADDR        0x6D000
+// LFS_FLASH_ADDR / LFS_FLASH_TOTAL_SIZE may be overridden by a -D build flag for
+// boards whose bootloader does not sit at the Adafruit-default offset (e.g. a
+// bootloader relocated below 0xF4000 shrinks the space available to LittleFS).
+#ifndef LFS_FLASH_ADDR
+  #ifdef NRF52840_XXAA
+    #define LFS_FLASH_ADDR      0xED000
+  #else
+    #define LFS_FLASH_ADDR      0x6D000
+  #endif
 #endif
 
+#ifndef LFS_FLASH_TOTAL_SIZE
 #define LFS_FLASH_TOTAL_SIZE  (7*FLASH_NRF52_PAGE_SIZE)
+#endif
 #define LFS_BLOCK_SIZE        128
 
 //--------------------------------------------------------------------+

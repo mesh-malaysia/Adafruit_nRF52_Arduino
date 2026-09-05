@@ -31,10 +31,14 @@
 #include "assert.h"
 
 
-#ifdef NRF52840_XXAA
-  #define BOOTLOADER_ADDR        0xF4000
-#else
-  #define BOOTLOADER_ADDR        0x74000
+// Overridable by a -D build flag for boards with a relocated bootloader; the
+// write path refuses to touch flash at or above this address.
+#ifndef BOOTLOADER_ADDR
+  #ifdef NRF52840_XXAA
+    #define BOOTLOADER_ADDR      0xF4000
+  #else
+    #define BOOTLOADER_ADDR      0x74000
+  #endif
 #endif
 
 // defined in linker script
